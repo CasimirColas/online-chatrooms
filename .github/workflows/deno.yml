@@ -17,13 +17,9 @@ jobs:
         run: |
           npm install
           npm run build
-          
-      - name: Zip build output
-        run: zip -r build.zip out
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "online-chatrooms"
           entrypoint: "./out/server.js"
-          file: build.zip

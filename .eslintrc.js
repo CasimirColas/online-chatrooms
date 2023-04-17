@@ -22,5 +22,8 @@ module.exports = {
     project: ["./tsconfig.json"],
   },
   plugins: ["react"],
-  rules: {},
+  rules: {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+  },
 };

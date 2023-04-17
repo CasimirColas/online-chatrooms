@@ -1,45 +1,22 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
+
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import { useEffect } from "react";
-import { io, type Socket } from "socket.io-client";
-import type {
-  ServerToClientEvents,
-  ClientToServerEvents,
-} from "@/types/socketCustomTypes";
 import { Button } from "@mui/material";
-
-let socket: Socket<ServerToClientEvents, ClientToServerEvents> | null = null;
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 export default function Home(): JSX.Element {
+  const router = useRouter();
+  function randomRoomString(): string {
+    return Math.random().toString(36).substring(2, 7);
+  }
+  const [randomRoom, setRandomRoom] = useState<string>("");
+  const [room, setRoom] = useState<string>("");
+
   useEffect(() => {
-    if (!socket) {
-      void fetch("/api/socket");
-      socket = io();
-
-      socket.on("connect", () => {
-        console.log("connected");
-      });
-
-      socket.on("hello", (msg: string) => {
-        console.log("hello", msg);
-      });
-
-      socket.on("userServerConnection", () => {
-        console.log("a user connected (client)");
-      });
-
-      socket.on("userServerDisconnection", (socketid: string) => {
-        console.log(socketid);
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-        socket = null;
-      }
-    };
+    setRoom(randomRoomString());
+    setRandomRoom(randomRoomString());
   }, []);
   return (
     <>
@@ -52,12 +29,28 @@ export default function Home(): JSX.Element {
       <main className={styles.main}>
         <Button
           variant="contained"
-          onClick={() => socket?.emit("hello", "kitty")}
+          onClick={() => {
+            void router.push(`/room/${randomRoom}`);
+          }}
         >
-          Send Hello {'"'}Kitty{'"'}
+          Join a random room {"("}
+          {randomRoom}
+          {")"}
         </Button>
-        <Button variant="contained">Create a chatroom</Button>
-        <Button variant="contained">Join a chatroom</Button>
+        <input
+          value={room}
+          onChange={(e) => {
+            setRoom(e.target.value);
+          }}
+        ></input>
+        <Button
+          variant="contained"
+          onClick={() => {
+            void router.push(`/room/${room}`);
+          }}
+        >
+          Join room : {room}
+        </Button>
       </main>
     </>
   );

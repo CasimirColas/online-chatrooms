@@ -17,12 +17,18 @@ export interface NextApiResponseWithSocket extends NextApiResponse {
 
 export interface ServerToClientEvents {
   userServerConnection: () => void;
-  hello: (msg: string) => void;
+  sendNotif: (msg: string) => void;
+  sendMsg: (msg: string, id: string) => void;
   userServerDisconnection: (socketid: string) => void;
+  joinRoom: (roomid: string) => void;
+  leaveRoom: (roomid: string) => void;
 }
 
 export interface ClientToServerEvents {
-  hello: (msg: string) => void;
+  sendNotif: (msg: string) => void;
+  sendMsg: (msg: string, id: string) => void;
   userServerConnection: () => void;
   userServerDisconnection: (socketid: string) => void;
+  joinRoom: (roomid: string) => void;
+  leaveRoom: (roomid: string) => void;
 }

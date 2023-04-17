@@ -22,4 +22,4 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "online-chatrooms"
-          entrypoint: "./out/server.js"
+          entrypoint: "./out/index.html"

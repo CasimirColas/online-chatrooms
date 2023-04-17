@@ -7,7 +7,6 @@ import type {
   ServerToClientEvents,
   ClientToServerEvents,
 } from "@/types/socketCustomTypes";
-import { stringify } from "querystring";
 
 export default function ioHandler(
   req: NextApiRequest,
